@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Слова Корана | Интервальное повторение</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Кнопка переключения светлой/темной темы (фиксированная в правом верхнем углу) -->
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">☀️</button>
+
+    <div class="app">
+        <!-- ШАПКА ПРИЛОЖЕНИЯ -->
+        <div class="header">
+            <div class="ornament">﴾ بِسْمِ اللَّهِ ﴿</div>
+            <h1>Слова Корана</h1>
+            <p>Топ-300 слов • Интервальное повторение</p>
+        </div>
+
+        <!-- СТАТИСТИКА (4 карточки с цифрами) -->
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-n" id="s-total">0</div>
+                <div class="stat-l">Всего слов</div>
+            </div>
+            <div class="stat">
+                <div class="stat-n" id="s-learned">0</div>
+                <div class="stat-l">Изучено</div>
+            </div>
+            <div class="stat">
+                <div class="stat-n" id="s-review">0</div>
+                <div class="stat-l">На повторении</div>
+            </div>
+            <div class="stat">
+                <div class="stat-n" id="s-streak">0</div>
+                <div class="stat-l">Сессий</div>
+            </div>
+        </div>
+
+        <!-- НАВИГАЦИЯ ПО КАТЕГОРИЯМ (горизонтальный скролл) -->
+        <div class="cat-nav scroll-row" id="cat-nav"></div>
+
+        <!-- ОСНОВНОЙ КОНТЕНТ (динамически загружается JavaScript) -->
+        <div id="main-content"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

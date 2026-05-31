@@ -1,0 +1,843 @@
+/* ===============================================
+   ИМПОРТ ШРИФТОВ
+   Amiri - для арабского текста
+   Nunito - для основного текста
+=============================================== */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;500;600;700&display=swap');
+
+/* ===============================================
+   ГЛОБАЛЬНЫЕ СБРОСЫ И БАЗОВЫЕ НАСТРОЙКИ
+=============================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===============================================
+   ПЕРЕМЕННЫЕ ТЕМНОЙ ТЕМЫ (по умолчанию)
+   --bg: основной фон
+   --bg3: фон для карточек и блоков
+   --card: фон карточки слова
+   --accent: акцентный цвет (золотой)
+   --accent2: светлый акцент
+   --text: основной текст
+   --text2: второстепенный текст
+   --green: цвет для "легко"
+   --red: цвет для "сложно"
+   --blue: цвет для прогресса
+   --border: цвет границ
+   --medium: цвет для "нормально"
+=============================================== */
+:root {
+    --bg: #0f1117;
+    --bg3: #1e2333;
+    --card: #242840;
+    --accent: #c9a84c;
+    --accent2: #e8c87a;
+    --text: #f0ead6;
+    --text2: #a09070;
+    --green: #3db87a;
+    --red: #e85555;
+    --blue: #5b8dee;
+    --border: #2e3450;
+    --medium: #f0a030;
+}
+
+/* ===============================================
+   СВЕТЛАЯ ТЕМА (переопределяет переменные)
+   Активируется классом .light-mode на body
+=============================================== */
+body.light-mode {
+    --bg: #f5f0e8;
+    --bg3: #e4ddd0;
+    --card: #fff;
+    --accent: #9a7230;
+    --accent2: #7a5518;
+    --text: #2a2010;
+    --text2: #7a6840;
+    --green: #1e8a50;
+    --red: #c03030;
+    --blue: #2860b8;
+    --border: #d0c8b0;
+    --medium: #c07018;
+}
+
+/* ===============================================
+   ОСНОВНЫЕ СТИЛИ BODY
+=============================================== */
+body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background .3s, color .3s;
+}
+
+/* ===============================================
+   КОНТЕЙНЕР ПРИЛОЖЕНИЯ
+=============================================== */
+.app {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+/* ===============================================
+   КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ
+=============================================== */
+.theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all .2s;
+}
+
+.theme-toggle:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ===============================================
+   ШАПКА (HEADER)
+=============================================== */
+.header {
+    text-align: center;
+    padding: 18px 0 10px;
+}
+
+.header h1 {
+    font-family: 'Amiri', serif;
+    font-size: 26px;
+    color: var(--accent2);
+}
+
+.header p {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 3px;
+}
+
+.ornament {
+    font-size: 20px;
+    color: var(--accent);
+    opacity: .7;
+    margin: 3px 0;
+}
+
+/* ===============================================
+   СТАТИСТИКА (4 карточки)
+=============================================== */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.stat {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 6px;
+    text-align: center;
+}
+
+.stat-n {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--accent2);
+}
+
+.stat-l {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 1px;
+}
+
+/* ===============================================
+   ОБЩИЙ СТИЛЬ ДЛЯ СКРОЛЛ-СТРОК (категории + режимы)
+   Горизонтальный скролл, скрытая полоса прокрутки
+=============================================== */
+.scroll-row {
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;      /* Firefox - скрываем */
+    -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
+}
+
+.scroll-row::-webkit-scrollbar {
+    display: none;              /* Chrome/Safari - скрываем */
+}
+
+/* ===============================================
+   НАВИГАЦИЯ ПО КАТЕГОРИЯМ (пилюли)
+=============================================== */
+.cat-nav {
+    margin: 10px 0;
+}
+
+.cat-btn {
+    flex-shrink: 0;
+    padding: 6px 13px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+}
+
+.cat-btn.active,
+.cat-btn:hover {
+    background: var(--accent);
+    color: #1a1200;
+    border-color: var(--accent);
+    font-weight: 700;
+}
+
+/* Специальный стиль для кнопки "На повторение" */
+.cat-btn.review-btn {
+    border-color: var(--red);
+    color: var(--red);
+}
+
+.cat-btn.review-btn.active,
+.cat-btn.review-btn:hover {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+}
+
+.review-count {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 10px;
+    padding: 1px 5px;
+    margin-left: 3px;
+    font-weight: 700;
+}
+
+/* ===============================================
+   ВКЛАДКИ РЕЖИМОВ (те же стили, что и у категорий)
+=============================================== */
+.mode-tabs {
+    margin: 8px 0;
+}
+
+.mode-tab {
+    flex-shrink: 0;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+}
+
+.mode-tab.active {
+    background: var(--accent);
+    color: #1a1200;
+    border-color: var(--accent);
+    font-weight: 700;
+}
+
+.mode-tab:hover:not(.active) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ===============================================
+   ПРОГРЕСС-БАР
+=============================================== */
+.card-progress {
+    margin: 10px 0 4px;
+}
+
+.prog-bar {
+    width: 100%;
+    height: 5px;
+    background: var(--bg3);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.prog-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width .4s;
+}
+
+.prog-fill.gold {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+.progress-label {
+    font-size: 12px;
+    color: var(--text2);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+/* ===============================================
+   3D-КАРТОЧКА СЛОВА
+=============================================== */
+.card-area {
+    perspective: 1000px;
+    margin: 6px 0;
+}
+
+.card-wrap {
+    width: 100%;
+    min-height: 250px;
+    cursor: pointer;
+}
+
+.card {
+    width: 100%;
+    min-height: 250px;
+    border-radius: 18px;
+    border: 0.5px solid var(--border);
+    background: var(--card);
+    transition: transform .45s cubic-bezier(.4, 0, .2, 1);
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 26px 22px;
+    backface-visibility: hidden;
+    border-radius: 18px;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.card-tag {
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    padding: 3px 10px;
+    background: var(--bg3);
+    border-radius: 20px;
+}
+
+.arabic-word {
+    font-family: 'Amiri', serif;
+    font-size: 60px;
+    color: var(--accent2);
+    line-height: 1.2;
+    direction: rtl;
+}
+
+.arabic-small {
+    font-family: 'Amiri', serif;
+    font-size: 44px;
+    color: var(--accent2);
+    line-height: 1.2;
+    direction: rtl;
+}
+
+.transliteration {
+    font-size: 14px;
+    color: var(--text2);
+    margin-top: 7px;
+    font-style: italic;
+}
+
+.translation {
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+.meaning-detail {
+    font-size: 12px;
+    color: var(--text2);
+    text-align: center;
+    line-height: 1.6;
+    margin-top: 5px;
+}
+
+.tap-hint {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 14px;
+    opacity: .6;
+}
+
+/* ===============================================
+   НАВИГАЦИЯ ПО КАРТОЧКАМ (стрелки)
+=============================================== */
+.card-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 9px 0;
+}
+
+.card-arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+    flex-shrink: 0;
+}
+
+.card-arrow:hover:not(:disabled) {
+    background: var(--accent);
+    color: #1a1200;
+}
+
+.card-arrow:disabled {
+    opacity: .3;
+    cursor: default;
+}
+
+.card-arrow-label {
+    font-size: 12px;
+    color: var(--text2);
+    text-align: center;
+    flex: 1;
+}
+
+/* ===============================================
+   КНОПКИ ОЦЕНКИ (Легко / Нормально / Трудно)
+=============================================== */
+.rating-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.rating-btns.hidden {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.r-btn {
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+}
+
+.r-easy {
+    background: var(--green);
+    color: #fff;
+}
+
+.r-med {
+    background: var(--medium);
+    color: #fff;
+}
+
+.r-hard {
+    background: var(--red);
+    color: #fff;
+}
+
+.r-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* ===============================================
+   РЕЖИМ РАЗДЕЛЫ (аккордеон)
+=============================================== */
+.acc-section {
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    background: var(--bg3);
+}
+
+.acc-header {
+    padding: 11px 12px 0;
+    user-select: none;
+}
+
+.acc-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 2px 10px;
+}
+
+.acc-left {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.acc-title-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.acc-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.acc-meta {
+    font-size: 11px;
+    color: var(--text2);
+}
+
+.acc-pct {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.acc-prog {
+    height: 5px;
+    background: var(--bg);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.acc-prog-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width .4s;
+}
+
+/* Правая панель с кнопками: увеличенный отступ, кнопка "Учить" сдвинута влево */
+.acc-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;           /* увеличенный отступ */
+    flex-shrink: 0;
+    margin-left: 10px;
+    padding-right: 2px;
+}
+
+/* Кнопка "Учить" */
+.acc-go-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 0.5px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+    margin-right: -6px;  /* сдвиг кнопки влево */
+}
+
+.acc-go-btn:hover {
+    background: var(--accent);
+    color: #1a1200;
+}
+
+/* Кнопка-стрелка (широкая, удобная для нажатия пальцем) */
+.acc-arrow-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;         /* широкая зона нажатия */
+    height: 38px;        /* высокая зона нажатия */
+    cursor: pointer;
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    background: var(--bg3);
+    transition: background .15s, border-color .15s;
+    flex-shrink: 0;
+}
+
+.acc-arrow-btn:hover {
+    background: var(--card);
+    border-color: var(--accent);
+}
+
+.acc-arrow-icon {
+    font-size: 16px;
+    color: var(--text2);
+    transition: transform .25s;
+    display: block;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.acc-arrow-icon.open {
+    transform: rotate(180deg);
+}
+
+/* Тело аккордеона (список слов) */
+.acc-body {
+    display: none;
+    padding: 0 12px 12px;
+}
+
+.acc-body.open {
+    display: block;
+}
+
+/* Сетка слов в разделе */
+.word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 7px;
+    margin-top: 8px;
+}
+
+.word-card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 9px;
+    text-align: center;
+}
+
+.word-card.mastered {
+    border-color: var(--green);
+    opacity: .8;
+}
+
+.word-card.weak {
+    border-color: var(--red);
+}
+
+.word-card .ar {
+    font-family: 'Amiri', serif;
+    font-size: 24px;
+    color: var(--accent2);
+    direction: rtl;
+}
+
+.word-card .tr {
+    font-size: 10px;
+    color: var(--text2);
+    margin-top: 1px;
+}
+
+.word-card .ru {
+    font-size: 11px;
+    color: var(--text);
+    margin-top: 2px;
+}
+
+.word-card .lvl {
+    font-size: 9px;
+    margin-top: 3px;
+    padding: 2px 5px;
+    border-radius: 7px;
+    display: inline-block;
+}
+
+.lvl-0 {
+    background: rgba(232, 85, 85, .15);
+    color: var(--red);
+}
+
+.lvl-1 {
+    background: rgba(240, 160, 48, .15);
+    color: var(--medium);
+}
+
+.lvl-2 {
+    background: rgba(61, 184, 122, .15);
+    color: var(--green);
+}
+
+.lvl-3 {
+    background: rgba(91, 141, 238, .15);
+    color: var(--blue);
+}
+
+/* ===============================================
+   РЕЖИМ ПРОГРЕСС
+=============================================== */
+.progress-page {
+    padding: 4px 0;
+}
+
+.prog-cat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+}
+
+.prog-cat-row:last-child {
+    border-bottom: none;
+}
+
+.prog-cat-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 100px;
+}
+
+.prog-cat-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--bg3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.prog-cat-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width .5s;
+}
+
+.prog-cat-pct {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    min-width: 36px;
+    text-align: right;
+}
+
+.prog-total {
+    text-align: center;
+    padding: 16px 0 8px;
+    border-top: 0.5px solid var(--border);
+    margin-top: 8px;
+}
+
+.prog-big {
+    font-family: 'Amiri', serif;
+    font-size: 42px;
+    color: var(--accent2);
+}
+
+.prog-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 4px;
+}
+
+/* ===============================================
+   ПУСТОЕ СОСТОЯНИЕ И ЗАВЕРШЕНИЕ СЕССИИ
+=============================================== */
+.empty-state {
+    text-align: center;
+    padding: 36px 20px;
+    color: var(--text2);
+}
+
+.completed-screen {
+    text-align: center;
+    padding: 28px 16px;
+}
+
+.completed-screen h2 {
+    font-family: 'Amiri', serif;
+    font-size: 24px;
+    color: var(--accent2);
+    margin-bottom: 7px;
+}
+
+.completed-screen p {
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ===============================================
+   ОСНОВНЫЕ КНОПКИ
+=============================================== */
+.btn-primary {
+    padding: 10px 22px;
+    background: var(--accent);
+    color: #1a1200;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+    margin-right: 7px;
+    transition: all .15s;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+}
+
+.btn-sec {
+    background: var(--bg3);
+    color: var(--text2);
+    border: 0.5px solid var(--border);
+}
+
+/* Режим "Изученные" - пустое состояние */
+.learned-empty {
+    text-align: center;
+    padding: 30px;
+    color: var(--text2);
+}
